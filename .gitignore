@@ -1,1 +1,6 @@
 *.class
+*.toc
+*.aux
+*.log
+_minted
+a.out
