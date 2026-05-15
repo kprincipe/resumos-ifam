@@ -3,5 +3,6 @@
 *.aux
 *.log
 *.out
+*.pdf
 _minted
 a.out
