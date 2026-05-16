@@ -109,6 +109,7 @@ int carregar_aluno(Aluno *aluno, FILE *f) {
 /* funcao de alunos */
 void alunos() {
     FILE *f = fopen("alunos.csv", "r");
+    if (f == NULL) return;
 
     Aluno aluno = {0};
     
@@ -131,6 +132,7 @@ void menu() {
     printf("2................inserir\n");
     printf("3................remover\n");
     printf("4................retificar\n");
+    printf("5................relatorio de aluno\n");
     printf("0................sair\n\n");
     printf("digite a opcao: ");
 
@@ -322,6 +324,53 @@ void retificar() {
     }
 }
 
+/* relatorio de aluno */
+void relatorio() {
+    system("clear");
+
+    printf("-------------- relatorio --------------\n");
+    printf("matricula: ");
+
+    char buffer[BUFFER_MAX];
+    fgets(buffer, BUFFER_MAX, stdin);
+    matTemp = atoi(buffer);
+
+    pAux = &inicio;
+
+    while (pAux->matricula != matTemp && pAux->pProx != NULL) {
+        pAnt = pAux;
+        pAux = pAux->pProx;
+    }
+
+    if (pAux->matricula == matTemp) {
+        printf("---------------------------------------\n");
+        printf("nome: %s\n\n", pAux->nome);
+        printf("\tmatricula: %d\n", pAux->matricula);
+        printf("\t   nota 1: %.2f\n", pAux->notas[0]);
+        printf("\t   nota 2: %.2f\n", pAux->notas[1]);
+        printf("\t    media: %.2f\n", pAux->notas[2]);
+        printf("---------------------------------------\n");
+        printf("gerar arquivo de relatorio ? sim(s) nao(n): ");
+        fgets(buffer, BUFFER_MAX, stdin);
+        if (toupper(*buffer) == 'S') {
+            sprintf(buffer, "relatorio_%d.txt", pAux->matricula);
+            FILE *f = fopen(buffer, "w");
+            fprintf(f, "---------------------------------------\n");
+            fprintf(f, "relatorio de aluno\n");
+            fprintf(f, "---------------------------------------\n");
+            fprintf(f, "nome: %s\n\n", pAux->nome);
+            fprintf(f, "\tmatricula: %d\n", pAux->matricula);
+            fprintf(f, "\t   nota 1: %.2f\n", pAux->notas[0]);
+            fprintf(f, "\t   nota 2: %.2f\n", pAux->notas[1]);
+            fprintf(f, "\t    media: %.2f\n", pAux->notas[2]);
+            fprintf(f, "---------------------------------------\n");
+            fclose(f);
+            printf("relatorio gerado com sucesso!\n");
+            getchar();
+        }
+    }
+}
+
 /* funcao principal */
 void main (void) {
     inicio.pProx = NULL; /* lista vazia */
@@ -333,7 +382,7 @@ void main (void) {
         do {
             cabecalho();
             menu();
-            if(opcao < 0 || opcao > 4){
+            if(opcao < 0 || opcao > 5){
                 opcao = -1;
                 printf("opcao invalida!\n");
             }
@@ -353,6 +402,9 @@ void main (void) {
                 break;
             case 4:
                 retificar();
+                break;
+            case 5:
+                relatorio();
                 break;
             default:
                 printf("\nopcao invalida\n");
