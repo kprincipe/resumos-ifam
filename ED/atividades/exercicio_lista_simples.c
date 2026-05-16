@@ -130,6 +130,7 @@ void menu() {
     printf("1................exibir\n");
     printf("2................inserir\n");
     printf("3................remover\n");
+    printf("4................retificar\n");
     printf("0................sair\n\n");
     printf("digite a opcao: ");
 
@@ -270,6 +271,57 @@ void remover() {
     }
 }
 
+/* funcao de retificacao */
+void retificar() {
+    *resp = '0';
+
+    system("clear");
+
+    printf("-------------- retificar --------------\n");
+    printf("matricula: ");
+
+    char buffer[BUFFER_MAX];
+    fgets(buffer, BUFFER_MAX, stdin);
+    matTemp = atoi(buffer);
+
+    pAux = &inicio;
+
+    while (pAux->matricula != matTemp && pAux->pProx != NULL) {
+        pAnt = pAux;
+        pAux = pAux->pProx;
+    }
+
+    if (pAux->matricula == matTemp) {
+        system("clear");
+        printf("retificar cadastro de %s:\n", pAux->nome);
+        printf("1................matricula\n");
+        printf("2................nome\n");
+        printf("3................nota 1\n");
+        printf("4................nota 2\n\n");
+        printf("0................sair\n");
+        printf("digite a opcao: ");
+
+        fgets(buffer, BUFFER_MAX, stdin);
+        
+        switch (atoi(buffer)) {
+            case 1:
+                printf("nova matricula: ");
+                fgets(buffer, BUFFER_MAX, stdin);
+                remover_aluno(pAux);
+                pAux->matricula = atoi(buffer);
+                break;
+            case 0:
+        }
+
+        salvar_aluno(*pAux, "alunos.csv");
+    } else {
+        printf("matricula inexistente\n");
+        getchar();
+        pAnt = NULL;
+        pAux = NULL;
+    }
+}
+
 /* funcao principal */
 void main (void) {
     inicio.pProx = NULL; /* lista vazia */
@@ -281,7 +333,7 @@ void main (void) {
         do {
             cabecalho();
             menu();
-            if(opcao < 0 || opcao > 3){
+            if(opcao < 0 || opcao > 4){
                 opcao = -1;
                 printf("opcao invalida!\n");
             }
@@ -298,6 +350,9 @@ void main (void) {
                 break;
             case 3:
                 remover();
+                break;
+            case 4:
+                retificar();
                 break;
             default:
                 printf("\nopcao invalida\n");
