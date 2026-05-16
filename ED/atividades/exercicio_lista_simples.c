@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <assert.h>
 
 #define BUFFER_MAX 255
 
@@ -20,15 +21,92 @@ typedef struct Aluno {
 
 Aluno inicio, *pAux, *pAnt;
 
+void salvar(Aluno aluno);
+int carregar_aluno(Aluno *aluno, FILE *f);
+void alunos();
+void cabecalho();
+void menu();
+void diario();
+void exibir();
+void adicionar(Aluno aluno);
+void inserir();
+void remover();
+
+/* funcao de salvar em arquivo */
+void salvar(Aluno aluno) {
+    FILE *f = fopen("alunos.csv", "a");
+    fprintf(f, "%d,%s,%f,%f\n", aluno.matricula, aluno.nome, aluno.notas[0], aluno.notas[1]);
+    fclose(f);
+}
+
+/* funcao de carregar de arquivo */
+int carregar_aluno(Aluno *aluno, FILE *f) {
+    char buffer[BUFFER_MAX];
+    char elemento[BUFFER_MAX];
+
+    // leitura de uma linha do arquivo
+    fgets(buffer, BUFFER_MAX, f);
+
+    if (feof(f)) return -1;
+
+    int i = 0, tamanho_elemento = 0;
+    int qual_elemento = 0;
+    while (buffer[i] != '\0') {
+        // verifica ocorrencia dos caracteres `,` e `\n` na linha
+        if (buffer[i] == ',' || buffer[i] == '\n') {
+            // copia a partir da virgula uma string ate a proxima virgula
+            strncpy(elemento, buffer + (i - tamanho_elemento), tamanho_elemento);
+            // terminador nulo para string
+            elemento[tamanho_elemento] = '\0';
+            
+            // verifica o indice do elemento na linha e armazena com devidas conversoes
+            switch (qual_elemento) {
+                case 0: aluno->matricula = atoi(elemento); break;
+                case 1: strcpy(aluno->nome, elemento); break;
+                case 2: aluno->notas[0] = atof(elemento); break;
+                case 3: aluno->notas[1] = atof(elemento); break;
+                default: printf("erro: formatacao de csv provavelmente incorreta\n");
+            }
+            
+            // reseta o tamanho do elemento para comecar a contagem do tamanho do proximo
+            tamanho_elemento = 0;
+            // incrementa indice de leitura da linha para pular leitura da virgula
+            i++;
+            // incrementa o indice do elemento na linha
+            qual_elemento++;
+            continue;
+        }
+        // incrementa tamanho do elemento atual sendo lido
+        tamanho_elemento++;
+        // incrementa indice de leitura da linha
+        i++;
+    }
+    
+    // processa media aritmetica das notas
+    aluno->notas[2] = (aluno->notas[0] + aluno->notas[1]) / 2;
+    return 1;
+}
+
+/* funcao de alunos */
+void alunos() {
+    FILE *f = fopen("alunos.csv", "r");
+
+    Aluno aluno = {0};
+    
+    while (carregar_aluno(&aluno, f) > 0) {
+        adicionar(aluno);
+    }
+}
+
 /* funcao de cabecalho */
-void cabecalho(){
+void cabecalho() {
     system("clear");
     printf("programa para gerencia a matricula, o nome e as notas\n");
     printf("de um aluno usando uma lista simplesmente encadeada\n\n");
 }
 
 /* funcao menu */
-void menu(){
+void menu() {
     printf("--------------- menu ----------------\n");
     printf("1................exibir\n");
     printf("2................inserir\n");
@@ -79,39 +157,49 @@ void exibir(){
     printf("pressione enter para continuar!");
     getchar();
 }
+
+/* adicionar no ao fim da lista */
+void adicionar(Aluno aluno) {
+    pAux = &inicio;
+    while (pAux->pProx) pAux = pAux->pProx;
+    
+    pAux->pProx = malloc(sizeof(Aluno));
+    pAux = pAux->pProx;
+    pAux->pProx = NULL;
+
+    memcpy(pAux, &aluno, sizeof(Aluno));
+}
+
 /* funcao inserir */
-void inserir(){
-    pAux = &inicio; /* aponta para o inicio da lista */
-    while(pAux->pProx) pAux = pAux->pProx;
+void inserir() {
+    Aluno aluno = {0};
 
     do {
         system("clear");
         printf("-------------- cadastro --------------\n");
 
-        pAux->pProx = malloc(sizeof(Aluno));
-        pAux = pAux->pProx;
-
         char buffer[BUFFER_MAX];
-
 
         printf("\t    matricula: ");
         fgets(buffer, BUFFER_MAX, stdin);
-        pAux->matricula = atoi(buffer);
+        aluno.matricula = atoi(buffer);
 
         printf("\tnome do aluno: ");
-        fgets(pAux->nome, BUFFER_MAX, stdin);
-        pAux->nome[strlen(pAux->nome) - 1] = '\0';
+        fgets(aluno.nome, BUFFER_MAX, stdin);
+        aluno.nome[strlen(aluno.nome) - 1] = '\0';
 
         printf("\t       nota 1: ");
         fgets(buffer, BUFFER_MAX, stdin);
-        pAux->notas[0] = atoi(buffer);
+        aluno.notas[0] = atof(buffer);
 
         printf("\t       nota 2: ");
         fgets(buffer, BUFFER_MAX, stdin);
-        pAux->notas[1] = atoi(buffer);
+        aluno.notas[1] = atof(buffer);
 
-        pAux->notas[2] = (pAux->notas[0] + pAux->notas[1]) / 2;
-        pAux->pProx = NULL;
+        aluno.notas[2] = (aluno.notas[0] + aluno.notas[1]) / 2;
+        
+        adicionar(aluno);
+        salvar(*pAux);
 
         printf("--------------------------------------\n");
 
@@ -120,8 +208,9 @@ void inserir(){
         *resp = toupper(*resp);
     } while (*resp == 'S');
 }
+
 /* funcao remover */
-void remover(){
+void remover() {
     *resp = '0';
 
     system("clear");
@@ -164,6 +253,7 @@ void main (void) {
     inicio.pProx = NULL; /* lista vazia */
     cabecalho();
     diario();
+    alunos();
 
     do {
         do {
