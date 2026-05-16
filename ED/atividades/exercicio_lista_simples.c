@@ -21,7 +21,8 @@ typedef struct Aluno {
 
 Aluno inicio, *pAux, *pAnt;
 
-void salvar(Aluno aluno);
+void remover_aluno(Aluno *aluno);
+void salvar_aluno(Aluno aluno, char *arquivo);
 int carregar_aluno(Aluno *aluno, FILE *f);
 void alunos();
 void cabecalho();
@@ -32,9 +33,27 @@ void adicionar(Aluno aluno);
 void inserir();
 void remover();
 
+/* remover aluno de arquivo */
+void remover_aluno(Aluno *aluno) {
+    FILE *f = fopen("alunos.csv", "r");
+    FILE *tmp = fopen("tmp", "w");
+
+    Aluno busca = {0};
+    
+    // carrega alunos do arquivo na estrutura estatica temporaria de aluno (busca)
+    while (carregar_aluno(&busca, f) > 0) {
+        // salvar aluno em arquivo temporario apenas se matriculas forem diferentes da que se deseja remover
+        if (aluno->matricula != busca.matricula)
+            salvar_aluno(busca, "tmp");
+    }
+
+    // renomeia arquivo temporario para subscrever os dados de alunos com a lista atualizada
+    rename("tmp", "alunos.csv");
+}
+
 /* funcao de salvar em arquivo */
-void salvar(Aluno aluno) {
-    FILE *f = fopen("alunos.csv", "a");
+void salvar_aluno(Aluno aluno, char *arquivo) {
+    FILE *f = fopen(arquivo, "a");
     fprintf(f, "%d,%s,%f,%f\n", aluno.matricula, aluno.nome, aluno.notas[0], aluno.notas[1]);
     fclose(f);
 }
@@ -199,7 +218,7 @@ void inserir() {
         aluno.notas[2] = (aluno.notas[0] + aluno.notas[1]) / 2;
         
         adicionar(aluno);
-        salvar(*pAux);
+        salvar_aluno(*pAux, "alunos.csv");
 
         printf("--------------------------------------\n");
 
@@ -238,6 +257,9 @@ void remover() {
             pAnt->pProx = pAux->pProx;
             pAux->pProx = NULL;
             pAnt = NULL;
+
+            remover_aluno(pAux);
+
             free(pAux);
         }
     } else {
