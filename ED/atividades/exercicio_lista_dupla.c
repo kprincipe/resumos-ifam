@@ -17,10 +17,10 @@ typedef struct Aluno {
     char nome[BUFFER_MAX];
     float notas[3]; /* valores das notas */
     struct Aluno *pProx; /* ponteiro para o proximo aluno */
-    struct Aluno *pAnt; /* ponteiro para o aluno anterior*/
+    struct Aluno *pAnt;
 } Aluno;
 
-Aluno *inicio, *pAux, *pAnt;
+Aluno inicio, *pAux, *pAnt;
 
 void remover_aluno(Aluno *aluno);
 void salvar_aluno(Aluno aluno, char *arquivo);
@@ -54,8 +54,13 @@ void remover_aluno(Aluno *aluno) {
 
 /* funcao de salvar em arquivo */
 void salvar_aluno(Aluno aluno, char *arquivo) {
+    // abre arquivo
     FILE *f = fopen(arquivo, "a");
+    
+    // imprime dados de aluno no arquivo
     fprintf(f, "%d,%s,%f,%f\n", aluno.matricula, aluno.nome, aluno.notas[0], aluno.notas[1]);
+
+    // fecha arquivo
     fclose(f);
 }
 
@@ -67,16 +72,21 @@ int carregar_aluno(Aluno *aluno, FILE *f) {
     // leitura de uma linha do arquivo
     fgets(buffer, BUFFER_MAX, f);
 
+    // retorna sinal negativo se fim do arquivo foi alcancado
     if (feof(f)) return -1;
 
     int i = 0, tamanho_elemento = 0;
     int qual_elemento = 0;
+
+    // repete enquanto nao econtrar caractere nulo (fim da string)
     while (buffer[i] != '\0') {
-        // verifica ocorrencia dos caracteres `,` e `\n` na linha
+        // verifica ocorrencia dos caracteres `,` e `\n` na linha onde
+        // `,` e o separador de elementos
+        // `\n` e o delimitador do ultimo elemento
         if (buffer[i] == ',' || buffer[i] == '\n') {
             // copia a partir da virgula uma string ate a proxima virgula
             strncpy(elemento, buffer + (i - tamanho_elemento), tamanho_elemento);
-            // terminador nulo para string
+            // terminador nulo para string gerada com o elemento
             elemento[tamanho_elemento] = '\0';
             
             // verifica o indice do elemento na linha e armazena com devidas conversoes
@@ -88,7 +98,7 @@ int carregar_aluno(Aluno *aluno, FILE *f) {
                 default: printf("erro: formatacao de csv provavelmente incorreta\n");
             }
             
-            // reseta o tamanho do elemento para comecar a contagem do tamanho do proximo
+            // reseta o tamanho do elemento para comecar a contagem de tamanho do proximo
             tamanho_elemento = 0;
             // incrementa indice de leitura da linha para pular leitura da virgula
             i++;
@@ -109,12 +119,16 @@ int carregar_aluno(Aluno *aluno, FILE *f) {
 
 /* funcao de alunos */
 void alunos() {
+    // abre arquivo
     FILE *f = fopen("alunos.csv", "r");
     if (f == NULL) return;
 
+    // aloca estaticamente variavel temporaria para aluno
     Aluno aluno = {0};
     
+    // carrega aluno na variavel temporaria ate o fim do arquivo
     while (carregar_aluno(&aluno, f) > 0) {
+        // adiciona aluno lido na lista encadeada
         adicionar(aluno);
     }
 }
@@ -134,6 +148,7 @@ void menu() {
     printf("3................remover\n");
     printf("4................retificar\n");
     printf("5................relatorio de aluno\n");
+    printf("6................relatorio geral\n");
     printf("0................sair\n\n");
     printf("digite a opcao: ");
 
@@ -159,7 +174,7 @@ void diario(){
 
 /* funcao exibir */
 void exibir(){
-    pAux = inicio; /* aponta para o inicio da lista */
+    pAux = inicio.pProx; /* aponta para o inicio da lista */
     system("clear");
     printf("--------------- diario ---------------\n");
     printf("\t professor: %s\n", professor);
@@ -167,7 +182,7 @@ void exibir(){
     printf("\t     turma: %s\n", turma);
     printf("--------------------------------------\n\n");
 
-    do {
+    while(pAux){
         printf("\t matricula: %d\n", pAux->matricula);
         printf("\t      nome: %s\n", pAux->nome);
         printf("\t    nota 1: %.2f\n", pAux->notas[0]);
@@ -175,8 +190,7 @@ void exibir(){
         printf("\t     media: %.2f\n\n", pAux->notas[2]);
 
         pAux = pAux->pProx;
-    } while(pAux->pProx != NULL);
-
+    }
     printf("--------------------------------------\n");
     printf("pressione enter para continuar!");
     getchar();
@@ -184,20 +198,24 @@ void exibir(){
 
 /* adicionar no ao fim da lista */
 void adicionar(Aluno aluno) {
-    pAux = inicio;
-
+    // ponteiro auxiliar recebe endereco do primeiro elemento da dlista
+    pAux = &inicio;
+    // percorre lista atribuindo ao ponteiro auxiliar o endereco do proximo no
+    // ate o final da lista, quando o proximo no e nulo
     while (pAux->pProx) pAux = pAux->pProx;
-
-    if (pAux->pAnt == NULL) {
-        memcpy(pAux, &aluno, sizeof(Aluno));
-        return;
-    }
-
+    
+    // ao chegar no fim da lista, alocar espaco no proximo no, que deixara de ser nulo
     pAux->pProx = malloc(sizeof(Aluno));
+    // guardar valor de ponteiro auxiliar
     pAnt = pAux;
+    // ponteiro auxiliar recebe endereco do proximo no que acabou de ser alocado
     pAux = pAux->pProx;
+    // ultimo no tem proximo no definido como nulo, se tornando o ultimo da lista
     pAux->pProx = NULL;
+    // ponteiro para aluno anterior recebido de ponteiro salvado anteriormente
     pAux->pAnt = pAnt;
+
+    // copia para ponteiro auxiliar dados de aluno
     memcpy(pAux, &aluno, sizeof(Aluno));
 }
 
@@ -209,8 +227,10 @@ void inserir() {
         system("clear");
         printf("-------------- cadastro --------------\n");
 
+        // aloca buffer temporario
         char buffer[BUFFER_MAX];
 
+        // recebe dados do usuario
         printf("\t    matricula: ");
         fgets(buffer, BUFFER_MAX, stdin);
         aluno.matricula = atoi(buffer);
@@ -227,9 +247,13 @@ void inserir() {
         fgets(buffer, BUFFER_MAX, stdin);
         aluno.notas[1] = atof(buffer);
 
+        // processa media aritmetica
         aluno.notas[2] = (aluno.notas[0] + aluno.notas[1]) / 2;
         
+        // adiciona aluno a lista encadeada
         adicionar(aluno);
+
+        // salva dados de aluno em arquivo
         salvar_aluno(*pAux, "alunos.csv");
 
         printf("--------------------------------------\n");
@@ -253,8 +277,10 @@ void remover() {
     fgets(buffer, BUFFER_MAX, stdin);
     matTemp = atoi(buffer);
 
-    pAux = inicio;
+    // atribui para o ponteiro auxiliar endereco do inicio da lisa
+    pAux = &inicio;
 
+    
     while (pAux->matricula != matTemp && pAux->pProx != NULL) {
         pAnt = pAux;
         pAux = pAux->pProx;
@@ -267,8 +293,11 @@ void remover() {
 
         if (*resp == 'S') {
             pAnt->pProx = pAux->pProx;
+
+            if (pAux->pProx) pAux->pProx->pAnt = pAnt;
+
             pAux->pProx = NULL;
-            pAnt = NULL;
+            pAux->pAnt = NULL;
 
             remover_aluno(pAux);
 
@@ -295,13 +324,16 @@ void retificar() {
     fgets(buffer, BUFFER_MAX, stdin);
     matTemp = atoi(buffer);
 
-    pAux = inicio;
+    pAux = &inicio;
 
+    // percorrer lista enquanto a matricula do no atual nao for igual a matricula recebida do usuario
+    // e o ponteiro auxiliar nao estiver no fim da lista
     while (pAux->matricula != matTemp && pAux->pProx != NULL) {
         pAnt = pAux;
         pAux = pAux->pProx;
     }
 
+    // caso matricula tenha sido encontrada
     if (pAux->matricula == matTemp) {
         system("clear");
         printf("retificar cadastro de %s:\n", pAux->nome);
@@ -325,7 +357,7 @@ void retificar() {
         }
 
         salvar_aluno(*pAux, "alunos.csv");
-    } else {
+    } else { // caso matricula nao encontrada
         printf("matricula inexistente\n");
         getchar();
         pAnt = NULL;
@@ -333,35 +365,114 @@ void retificar() {
     }
 }
 
+/* relatorio geral */
+void relatorio_geral() {
+    // limpa tela
+    system("clear");
+
+    // aloca string temporaria para entrada de dados do usuario
+    char buffer[BUFFER_MAX];
+    FILE *f;
+
+    printf("gerar arquivo de relatorio? sim(s) nao(n): ");
+    // entrada de dados do usuario
+    fgets(buffer, BUFFER_MAX, stdin);
+
+    if (toupper(buffer[0]) == 'S') {
+        f = fopen("relatorio_alunos.txt", "w");
+        fprintf(f, "---------------- diario ----------------\n");
+        fprintf(f, "\t professor: %s\n", professor);
+        fprintf(f, "\tdisciplina: %s\n", disciplina);
+        fprintf(f, "\t     turma: %s\n", turma);
+        fprintf(f, "---------------- alunos ----------------\n");
+    }
+
+    printf("---------------- diario ----------------\n");
+    printf("\t professor: %s\n", professor);
+    printf("\tdisciplina: %s\n", disciplina);
+    printf("\t     turma: %s\n", turma);
+    printf("---------------- alunos ----------------\n");
+
+    // ponteiro auxiliar recebe endereco do inicio da lista encadeada
+    pAux = &inicio;
+
+    // percorrer lista enquanto a matricula do no atual nao for igual a matricula recebida do usuario
+    // e o ponteiro auxiliar nao estiver no fim da lista
+    while (pAux->pProx != NULL) {
+        // imprimir relatorio de aluno encontrado
+        printf("+ nome: %s\n\n", pAux->nome);
+        printf("\tmatricula: %d\n", pAux->matricula);
+        printf("\t   nota 1: %.2f\n", pAux->notas[0]);
+        printf("\t   nota 2: %.2f\n", pAux->notas[1]);
+        printf("\t    media: %.2f\n", pAux->notas[2]);
+        printf("----------------------------------------\n");
+
+        if (toupper(buffer[0]) == 'S') {
+            // gerar arquivo texto com o relatorio
+            fprintf(f, "nome: %s\n\n", pAux->nome);
+            fprintf(f, "\tmatricula: %d\n", pAux->matricula);
+            fprintf(f, "\t   nota 1: %.2f\n", pAux->notas[0]);
+            fprintf(f, "\t   nota 2: %.2f\n", pAux->notas[1]);
+            fprintf(f, "\t    media: %.2f\n", pAux->notas[2]);
+            fprintf(f, "----------------------------------------\n");
+        }
+    
+        // ponteiro de no anterior recebe endereco do no atual
+        pAnt = pAux;
+        // ponteiro auxiliar recebe endereco do proximo no
+        pAux = pAux->pProx;
+    }
+
+    // fecha arquivo caso o mesmo haja sido aberto previamente
+    if (toupper(*buffer) == 'S') {
+        printf("relatorio gerado com sucesso!\n");
+        fclose(f);
+    }
+    
+    printf("pressione qualquer tecla para continuar!\n");
+    getchar();
+}
+
 /* relatorio de aluno */
 void relatorio() {
+    // limpa tela
     system("clear");
 
     printf("-------------- relatorio --------------\n");
     printf("matricula: ");
 
+    // aloca string temporaria para entrada de dados do usuario
     char buffer[BUFFER_MAX];
+    // entrada de dados do usuario
     fgets(buffer, BUFFER_MAX, stdin);
+    // converte o que o usuario entra para inteiro
     matTemp = atoi(buffer);
 
-    pAux = inicio;
+    // ponteiro auxiliar recebe endereco do inicio da lista encadeada
+    pAux = &inicio;
 
+    // percorrer lista enquanto a matricula do no atual nao for igual a matricula recebida do usuario
+    // e o ponteiro auxiliar nao estiver no fim da lista
     while (pAux->matricula != matTemp && pAux->pProx != NULL) {
         pAnt = pAux;
         pAux = pAux->pProx;
     }
-
+    
     if (pAux->matricula == matTemp) {
+        // imprimir relatorio de aluno encontrado
         printf("---------------------------------------\n");
-        printf("nome: %s\n\n", pAux->nome);
+        printf("+ nome: %s\n\n", pAux->nome);
         printf("\tmatricula: %d\n", pAux->matricula);
         printf("\t   nota 1: %.2f\n", pAux->notas[0]);
         printf("\t   nota 2: %.2f\n", pAux->notas[1]);
         printf("\t    media: %.2f\n", pAux->notas[2]);
         printf("---------------------------------------\n");
+
         printf("gerar arquivo de relatorio ? sim(s) nao(n): ");
         fgets(buffer, BUFFER_MAX, stdin);
+
         if (toupper(*buffer) == 'S') {
+            // gerar arquivo texto com o relatorio
             sprintf(buffer, "relatorio_%d.txt", pAux->matricula);
             FILE *f = fopen(buffer, "w");
             fprintf(f, "---------------------------------------\n");
@@ -382,10 +493,7 @@ void relatorio() {
 
 /* funcao principal */
 void main (void) {
-    inicio = malloc(sizeof(Aluno));
-    inicio->pProx = NULL; /* lista vazia */
-    inicio->pAnt = NULL; /* no anterior ao primeiro da lista */
-
+    inicio.pProx = NULL; /* lista vazia */
     cabecalho();
     diario();
     alunos();
@@ -394,9 +502,10 @@ void main (void) {
         do {
             cabecalho();
             menu();
-            if(opcao < 0 || opcao > 5){
+            if(opcao < 0 || opcao > 6){
                 opcao = -1;
                 printf("opcao invalida!\n");
+                getchar();
             }
         } while(opcao == -1);
 
@@ -417,6 +526,9 @@ void main (void) {
                 break;
             case 5:
                 relatorio();
+                break;
+            case 6:
+                relatorio_geral();
                 break;
             default:
                 printf("\nopcao invalida\n");
