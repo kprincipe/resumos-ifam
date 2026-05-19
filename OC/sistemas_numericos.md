@@ -1,4 +1,9 @@
-/newpage
+---
+title: Sistemas Numéricos
+author:
+- Kinan Principe
+date: 18/05/2026
+---
 
 # Sistemas Numéricos
 

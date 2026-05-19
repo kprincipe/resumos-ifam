@@ -1,3 +1,10 @@
+---
+title: Introdução à Organização de Computadores
+author:
+- Kinan Principe
+date: 18/05/2026
+---
+
 # O que é Organização de Computadores
 - Compreensão dos componentes de _hardware_ para desenvolver software:
     1. Com bom desempenho;

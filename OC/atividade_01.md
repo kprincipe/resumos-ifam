@@ -1,3 +1,10 @@
+---
+title: Atividade 1
+author:
+- Kinan Principe
+date: ??/05/2026
+---
+
 # Atividade
 
 ## Questão 1

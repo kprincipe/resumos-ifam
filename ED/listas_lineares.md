@@ -1,3 +1,11 @@
+---
+title: Listas Lineares
+author:
+- Kinan Principe
+date: 18/05/2026
+keywords: [nothing, nothingness]
+---
+
 # Listas Lineares
 
 ## Declaração de Estrutura

@@ -1,4 +1,3 @@
-MDC=pandoc
 FLAGS=--from markdown --to pdf --toc -o
 
 .PHONY: clean
@@ -12,4 +11,4 @@ pitch_treino.pdf: pitch_treino.md
 	$(MDC) pitch_treino.md $(FLAGS) pitch_treino.pdf
 
 clean:
-	rm *.pdf
+	@rm *.pdf

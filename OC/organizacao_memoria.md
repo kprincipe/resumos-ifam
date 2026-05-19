@@ -1,3 +1,10 @@
+---
+title: Organização de Memória
+author:
+- Kinan Principe
+date: ??/05/2026
+---
+
 # Organização de Memória
 
 ## Por que estudar Organização de Memória?

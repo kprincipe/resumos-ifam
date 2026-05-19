@@ -1,28 +1,25 @@
-MDC=pandoc
-FLAGS=--from markdown --to pdf
+MDC=?
+FLAGS=?
 
 .PHONY: clean
 
-all: 01_aula_04_02.pdf 02_aula_11_02.pdf 03_aula_25_02.pdf 04_aula_18_03.pdf 05_aula_22_04.pdf 06_aula_13_05.pdf
+all: introducao.pdf portas_logicas.pdf sistemas_numericos.pdf ciclo_instrucao_interrupcao.pdf organizacao_memoria.pdf
 
 
-01_aula_04_02.pdf: 01_aula_04_02.md
-	$(MDC) $(FLAGS) 01_aula_04_02.md -o 01_aula_04_02.pdf
+introducao.pdf: introducao.md
+	$(MDC) introducao.md $(FLAGS) introducao.pdf
 
-02_aula_11_02.pdf: 02_aula_11_02.md
-	$(MDC) $(FLAGS) 02_aula_11_02.md -o 02_aula_11_02.pdf
+sistemas_numericos.pdf: sistemas_numericos.md
+	$(MDC) sistemas_numericos.md $(FLAGS)  sistemas_numericos.pdf
 
-03_aula_25_02.pdf: 03_aula_25_02.md
-	$(MDC) $(FLAGS) 03_aula_25_02.md -o 03_aula_25_02.pdf
+portas_logicas.pdf: portas_logicas.md
+	$(MDC) portas_logicas.md $(FLAGS)  portas_logicas.pdf
 
-04_aula_18_03.pdf: 04_aula_18_03.md
-	$(MDC) $(FLAGS) 04_aula_18_03.md -o 04_aula_18_03.pdf
+ciclo_instrucao_interrupcao.pdf: ciclo_instrucao_interrupcao.md
+	$(MDC) ciclo_instrucao_interrupcao.md $(FLAGS)  ciclo_instrucao_interrupcao.pdf
 
-05_aula_22_04.pdf: 05_aula_22_04.md
-	$(MDC) $(FLAGS) 05_aula_22_04.md -o 05_aula_22_04.pdf
-
-06_aula_13_05.pdf: 06_aula_13_05.md
-	$(MDC) $(FLAGS) 06_aula_13_05.md -o 06_aula_13_05.pdf
+organizacao_memoria.pdf: organizacao_memoria.md
+	$(MDC) organizacao_memoria.md $(FLAGS)  organizacao_memoria.pdf
 
 clean:
 	rm *.pdf

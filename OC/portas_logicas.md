@@ -1,4 +1,9 @@
-\newpage
+---
+title: Portas Lógicas
+author:
+- Kinan Principe
+date: 18/05/2026
+---
 
 # Portas Lógicas
 

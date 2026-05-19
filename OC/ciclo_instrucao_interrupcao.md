@@ -1,4 +1,9 @@
-\newpage
+---
+title: Ciclo de Instrução e Interrupção
+author:
+- Kinan Principe
+date: 18/05/2026
+---
 
 # Ciclo de Instrução e Interrupção
 
