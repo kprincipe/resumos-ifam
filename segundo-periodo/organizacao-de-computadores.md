@@ -170,3 +170,47 @@ D6: 0x0005
 ```
 
 - Suponha que o próximo valor apanhado do dispositivo 5 seja 3 e que o local
+
+# 4. Organização de Memória
+
+## 4.1 Conceitos
+- O elemento a ser manipulado é o *bit*.
+- Uma **unidade de informação** (célula) é um grupo de n *bits* que formam um *byte*. Por exemplo, quando $n = 8$ &rarr; célula de 1 byte.
+- Por último o **endereço** é o código de indentificação da **localização das células**.
+
+### 4.1.1 Tempo de Acesso
+Tempo gasto para a memória colocar uma informação no barramento de dados após uma determinada posição ter sido endereçada.
+
+- Um dos parâmetros que medem o desempenho da memória;
+- Também chamado de **latência**;
+
+**Memórias eletrônicas** (Acesso aleatório/direto) tem o mesmo tempo de acesso independentemente da distância entre o local de um acesso e o local do próximo acesso. Já, em dispositivos **eletromecânicos** (Acesso sequencial), esse tempo de acesso varia conforme a distância.
+
+### 4.1.2 Capacidade
+Quantidade de informação que pode ser armazenada em uma memória. As unidades de medida mais comuns são **células** (memória principal ou cache), **setores** (discos) e ***bits*** (registradores).
+
+### 4.1.2 Volatilidade
+Capacidade da memória de manter seus dados sem energia elétrica. Memórias podem ser **voláteis** ou **não voláteis**.
+
+- **Memória não volátil**: Ela **retém** informação quando a energia elétrica é desligada.
+- **Memória volátiva**: Ela **perde** a informação armazenada na ausência de energia elétrica.
+
+### 4.1.2 Tecnologia de Fabricação
+- **Semicondutores**: fabricado com circuitos eletrônicos e baseados em semicondutores;
+    + Rápidas e relativamente caras;
+    + Há várias tecnologias específicas cada qual com suas vantagens e desvantagens;
+    + *Exemplos*: Registradores, Memória Principal, Memória Cache, SSD.
+
+![Memórias Semicondutoras](res/memorias-semicondutoras.png)
+
+- **Magnética**:
+- **Meio óptico**: 
+
+## 4.2 Diferenciando Endereço, Conteúdo e Locação
+- **Endereço**: Identificador único de cada posição de memória. É utilizado para acessar um dado armazenado.
+- **Conteúdo**: É o dado armazenado em uma determinada posição de memória. Pode ser um número, letra, instrução.
+- **Locação**: Posição física real onde os dados estão armazenados. Refere-se ao local físico dentro do chip de memória.
+
+## 4.3 Diferentes tipos de Memória
+
+![Memórias de um Computador](res/memorias-computador.png)

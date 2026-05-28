@@ -6,6 +6,7 @@ import java.util.List;
 import controlador.ProdutoController;
 import entidade.Pedido;
 import interfaces.TelaCadastrarLivro;
+import interfaces.TelaCadastrarMovel;
 import interfaces.TelaSelecionarTipoProduto;
 
 public class Compra {
@@ -44,7 +45,8 @@ public class Compra {
 	}
 	
 	public void cadastrarMovel() {
-		
+		TelaCadastrarMovel tcm = new TelaCadastrarMovel();
+		produtoController.cadastrarProduto(tcm.cadastrarNovoMovel());
 	}
 	
 	public void listarPedidos() {

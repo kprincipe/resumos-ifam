@@ -1,7 +1,9 @@
 /*
  *  Descricao: Implementacao de uma arvore binaria
- *      autor: Kinan Principe <kprincipe>
- *       data: 25/05/2026
+ *           autor: Kinan Principe <kprincipe>
+ *          criado: 25/05/2026
+ *                : ----------
+ *      atualizado: 26/05/2026
  */
 
 #include <stdio.h>
@@ -9,7 +11,6 @@
 #include <stdlib.h>
 
 typedef struct No {
-    int tipo;
     int numero;
     struct No *direita;
     struct No *esquerda;
@@ -20,42 +21,42 @@ enum Tipo {
     NUM
 };
 
-int nivel = 0;
-// nao entendi como funciona
-void inserir_expressao(No *no, enum Tipo tipo) {
-    No *temp = no;
-    if (!temp->esquerda && temp->direita) {
-        temp = temp->direita;
-        nivel++;
-        inserir_expressao(temp, tipo);
-    } else {
-        temp->esquerda = malloc(sizeof(No));
-        temp = temp->esquerda;
-        temp->tipo = EXP;
-        temp->esquerda = NULL;
-        temp->direita = NULL;
-        printf("armazenado no nivel %d\n", nivel);
-    }
-}
-
 No inicializar_arvore() {
     return (No) {
-        .tipo = 0,
         .esquerda = NULL,
         .direita = NULL
     };
 }
 
+void inserir_no(No *no, int numero) {
+    if (no->esquerda) {
+        inserir_no(no->esquerda, numero);
+    } else {
+        no->esquerda = malloc(sizeof(No));
+        no->numero = numero;
+        return;
+    }
+
+    if (no->direita) {
+        inserir_no(no->direita, numero);
+    } else {
+        no->direita = malloc(sizeof(No));
+        no->numero = numero;
+        return;
+    }
+}
+
 int main(void) {
     No arvore = inicializar_arvore();
 
-    char *codigo = "(2 + 2)";
+    inserir_no(&arvore, 67);
+    inserir_no(&arvore, 42);
+    inserir_no(&arvore, 39);
+    inserir_no(&arvore, 12);
+    inserir_no(&arvore, 49);
 
-    for (int i = 0; i < strlen(codigo); ++i) {
-        if (codigo[i] == '(') {
-            inserir_expressao(&arvore, EXP);
-        }
-    }
-
+    printf("\t  %d\n", arvore.numero);
+    printf("   %d\t\t%d\n", arvore.esquerda->numero, arvore.direita->numero);
+    printf("%d    %d\n", arvore.esquerda->esquerda->numero, arvore.esquerda->direita->numero);
     return 0;
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import entidade.Livro;
+import entidade.Movel;
 import entidade.Produto;
 
 public class ProdutoController {
@@ -29,6 +30,11 @@ public class ProdutoController {
 				Livro livro = (Livro) produto;
 				if(livro.getTitulo().contains(chaveMin) ||
 					livro.getAutor().contains(chaveMin))
+					produtosBusca.add(produto);
+			} else if (produto instanceof Movel) {
+				Movel movel = (Movel) produto;
+				if(movel.getCor().contains(chaveMin) ||
+					movel.getMaterial().contains(chaveMin))
 					produtosBusca.add(produto);
 			} else {
 				if(produto.getDescricao().contains(chave))

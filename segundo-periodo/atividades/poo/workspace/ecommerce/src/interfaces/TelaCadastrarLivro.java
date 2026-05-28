@@ -14,6 +14,8 @@ public class TelaCadastrarLivro {
 		livro.setAutor(Input.get());
 		System.out.print("Informe o Preço: ");
 		livro.setPreco(Float.parseFloat(Input.get()));
+		System.out.print("Informe a Edição: ");
+		livro.setEdicao(Input.get());
 		livro.setUnidade("UN");
 		return livro;
 	}

@@ -14,6 +14,6 @@ public class TelaBuscaProduto {
 	}
 	
 	public List<Produto> buscarProduto() {
-		return produtoController.buscarProdutos(Input.get()).toString();
+		return produtoController.buscarProdutos(Input.get());
 	}
 }

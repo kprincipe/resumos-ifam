@@ -1,6 +1,6 @@
 ---
 title: Estrutura de Dados
-date: 25-05-2026
+date: 26-05-2026
 ---
 
 # 1. Referência
@@ -123,3 +123,6 @@ while (no_atual->prox_nota != NULL) {
     no_atual = no_atual->prox_nota;
 }
 ```
+
+# 4. Árvores Binárias
+- 
