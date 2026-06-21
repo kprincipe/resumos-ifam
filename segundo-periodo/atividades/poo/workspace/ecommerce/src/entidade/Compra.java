@@ -23,7 +23,6 @@ public class Compra {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -42,7 +41,6 @@ public class Compra {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	
 	
 	
 }

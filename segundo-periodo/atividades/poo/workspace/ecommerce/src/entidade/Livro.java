@@ -53,7 +53,7 @@ public class Livro extends Produto {
 	@Override
 	public String toString() {
 		super.toString();
-		return "Livro [titulo=" + titulo + ", autor=" + autor + ", edicao=" + edicao + "]";
+		return "Livro [titulo=" + titulo + ", autor=" + autor + ", edicao=" + edicao + ", estoque=" + super.getQteEstoque() + "]";
 	}
 	
 	

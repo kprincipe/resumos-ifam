@@ -214,3 +214,40 @@ Capacidade da memória de manter seus dados sem energia elétrica. Memórias pod
 ## 4.3 Diferentes tipos de Memória
 
 ![Memórias de um Computador](res/memorias-computador.png)
+
+# 5. Hierarquia de Memória e Memória Cache
+Há vários tipos de memória, cada uma com suas características em relação a:
+
+- Custo (preço por bit);
+- Capacidade para armazenamento;
+- Tempo de acesso.
+
+A memória de um computador é organizada em uma hierarquia:
+
+- Registradores: nível mais alto, são memórias rápidas dentro do processador;
+- Vários níveis de memória cache: L1, L2, etc.
+- Memória interna ou principal/RAM
+- Memória externa/disco
+- Memória externa/fita magnética
+- Memória remota/núvem
+
+![Hierarquia de Memória](res/cache.png)
+
+Processadores modernos trabalham com todos os níveis de cache dentro do processador.
+
+- Quando o processador precisa de um dado, ele pode já estar na cache (*cache hit*). Se não (*cache miss*), tem que buscar na memória ou até no disco.
+- Quando um dado é acessado, um bloco inteiro contendo o dado é trazido à memória cache. Blocos vizinhos também podem ser trazidos à memória cache (prefetching) para possível uso futuro.
+
+## 5.1 Fenômeno da Localidade
+
+### 5.1.1 Localidade Temporal
+Um dado ou instrução acessado recentemente tem maior probabilidade de ser acessado novamente, do que um dado ou instrução acessado há mais tempo.
+
+### 5.1.2 Localidade Espacial
+Se um dado ou instrução é acessado recentemente, há uma probabilidade grande de acesso a dados ou instruções próximos.
+
+## 5.2 Função de Mapeamento
+- **Mapeamento Direto**:
+    + *Thrashing*: número grande de *cache miss* ou baixo *hit ratio*.
+- **Mapeamento Associativo**:
+- **Mapeamento Associativo por Conjunto**: Mais usado em processadores modernos.

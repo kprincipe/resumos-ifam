@@ -6,13 +6,13 @@ date: 25-05-2026
 # 1. Projeto de Modelagem Banco de Dados
 
 ## 1.1 Ideias
-### 1.1.1 _SUI_ - Sistema Unificado Intra departamental
+### 1.1.1 SUI - Sistema Unificado Intra departamental
 - Departamentos do IFAM interligados por banco de dados relacional, permitindo maior eficiência na troca de informações entre diferentes blocos administrativos da instituição.
 
-### 1.1.2 _Plataforma de compartilhamento de Artes Visuais_. "Conceito inicial do Instagram antes da Facebook".
+### 1.1.2 Plataforma de compartilhamento de Artes Visuais. "Conceito inicial do Instagram antes da Facebook".
 - A desenvolver...
 
-### 1.1.3 _Aplicação que administra reservas de mesas em um restaurante_ e disponibiliza consulta de cardápios e possíveis reservas.
+### 1.1.3 Aplicação que administra reservas de mesas em um restaurante e disponibiliza consulta de cardápios e possíveis reservas.
 - Existem duas tabelas principais:
     * Reservas
     * Pratos
@@ -98,20 +98,36 @@ date: 25-05-2026
 - Ajuda na tomada de decisão.
 - A tecnologia de _tempo real_ e _banco de dados ativo_ é usada para controlar processos industriais e de manufatura industrial.
 
-### 2.2.1 Data Warehouse
-> **_NOTA_:** Elaborar depois... Pode cair em prova!!
+\newpage
 
----
+### 2.2.1 Data Warehouse
+> **_NOTA_:** resumir isso em bullets!! muito extenso
+
+Atualmente, existe uma grande necessidade de oferecer para pessoas que tomam decisões informações no **nível correto de detalhe** para dar suporte à tomada de decisão. **Data warehousing**, **processamento analítico on-line** (OLAP) e **mineração de dados** oferecem essa funcionalidade.
+
+- **Data Warehouse** é uma coleção de informações bem como um **sistema de suporte**, no entanto, eles tem a característica de servir principalmente para aplicação de **apoio à decisão**. Eles são otimizados para **recuperação de dados** e não para processamento de transação de rotina.
 
 ![Data Warehouse da Wikipedia](res/data_warehouse.png)
 
----
+### 2.2.2 Tipos de Aplicações de Data Warehousing
+- **OLAP**: Online Analytic Processing
+    + Análise de dados complexa;
+    + Utilizam capacidade de computação distribuída para análises que exigem mais armazenamento e poder de processamento do que disponíveis em computadores desktop;
+- **DSS/EIS**: Decision Support System/Executive Information System
+    + Ajuda os principais tomadores de decisão;
+    + Utiliza dados de nível mais alto em decisões complexas;
+    + **Não confundir** com sistemas de integração
+empresarial.
 
 # 3. Técnicas de Pesquisa de Bancos de Dados
-- NoSQL;
-- SQL.
 
-> **_NOTA_:** Elaborar depois...
+## 3.2 SQL.
+> **_NOTA_:** Elaborar...
+
+- Utiliza termos **tabela**, **linha** e **coluna** para os termos do modelo relacional **relação**, **tupla** e **atributo**.
+
+## 3.1 NoSQL
+> **_NOTA_:** Elaborar...
 
 ## 3.1 Exercício de Elaboração de Minimundo
 
@@ -199,3 +215,15 @@ date: 25-05-2026
 
 ## 4.4 Ferramentas
 - HeidiSQL
+
+## 5. Modelo de Entidade-Relacionamento
+> **_NOTA_:** elaborar
+
+## 6. Álgebra Relacional
+> **_NOTA_:** elaborar
+
+### 6.1 Modelo Relacional
+> **_NOTA_:** elaborar
+
+## 5. SQL Básica
+> **_NOTA_:** elaborar

@@ -31,7 +31,7 @@ public class Movel extends Produto {
 		this.cor = cor;
 	}
 	public String getMaterial() {
-		return material;
+		return material;	
 	}
 	public void setMaterial(String material) {
 		this.material = material;
@@ -39,12 +39,10 @@ public class Movel extends Produto {
 	@Override
 	public String toString() {
 		super.toString();
-		return "Imovel [altura=" + altura + ", profundidade=" + profundidade + ", largura=" + largura + ", cor=" + cor
-				+ ", material=" + material + ", getAltura()=" + getAltura() + ", getProfundidade()=" + getProfundidade()
-				+ ", getLargura()=" + getLargura() + ", getCor()=" + getCor() + ", getMaterial()=" + getMaterial()
-				+ ", getCodigo()=" + getCodigo() + ", getDescricao()=" + getDescricao() + ", getUnidade()="
-				+ getUnidade() + ", getQteEstoque()=" + getQteEstoque() + ", getPreco()=" + getPreco() + ", toString()="
-				+ super.toString() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode() + "]";
+		return "Movel [altura=" + altura + ", profundidade=" + profundidade + ", largura=" + largura 
+				+ ", cor=" + cor + ", material=" + material + ", codigo=" + getCodigo() 
+				+ ", descricao=" + getDescricao() + "\nunidade=" + getUnidade() 
+				+ ", quantidade estoque=" + getQteEstoque() + ", preco" + getPreco() + "]";
 	}
 	
 	

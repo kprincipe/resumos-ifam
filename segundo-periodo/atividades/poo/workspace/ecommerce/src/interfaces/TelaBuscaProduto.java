@@ -14,6 +14,7 @@ public class TelaBuscaProduto {
 	}
 	
 	public List<Produto> buscarProduto() {
+		System.out.print("Pesquisa: ");
 		return produtoController.buscarProdutos(Input.get());
 	}
 }

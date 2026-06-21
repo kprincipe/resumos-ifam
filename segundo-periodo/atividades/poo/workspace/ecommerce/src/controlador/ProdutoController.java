@@ -6,12 +6,18 @@ import java.util.List;
 import entidade.Livro;
 import entidade.Movel;
 import entidade.Produto;
+import interfaces.TelaListarProdutos;
 
 public class ProdutoController {
 	private List<Produto> produtos = new ArrayList<Produto>();
 	
 	public void cadastrarProduto(Produto produto) {
 		produtos.add(produto);
+	}
+	
+	public void listarProdutos() {
+		TelaListarProdutos tlp = new TelaListarProdutos();
+		tlp.listarProdutos(produtos);
 	}
 	
 	public void atualizarProduto(Produto produto) {
