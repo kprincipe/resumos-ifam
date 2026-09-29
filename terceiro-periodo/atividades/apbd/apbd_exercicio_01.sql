@@ -218,6 +218,45 @@ group by clisexo, fpdescricao;
 	16) Mostre o nome e saldo do(s) produto(s) vendidos para clientes do sexo feminino.
 */
 
+select pronome, procusto
+from grupoproduto
+inner join produto on grpcodigo = progrpcodigo
+where proativo = 1 and grpdescricao in ("informatica", "eletroeletronico")
+order by procusto desc;
+
+delimiter $$
+create procedure sp_q16(pstatus char (1), pgrupo1 varchar(40), pgrupo2 varchar(40))
+begin
+	declare v_existegrupo1, v_existegrupo2 boolean default false;
+    set v_existegrupo1 = (select count(*) from grupoproduto where grpdescricao = pgrupo1);
+    set v_existegrupo2 = (select count(*) from grupoproduto where grpdescricao = pgrupo2);
+    
+	if pstatus in (0, 1) then
+		if v_existegrupo1 and v_existegrupo2 then
+			select pronome, procusto
+			from grupoproduto
+			inner join produto on grpcodigo = progrpcodigo
+			where proativo = pstatus and grpdescricao in (pgrupo1, pgrupo2)
+			order by procusto desc;
+        else
+			if not v_existegrupo1 and not v_existegrupo2 then
+				select concat("Os grupos ", pgrupo1, " e ", pgrupo2, " não existem") resp;
+            elseif not v_existegrupo1 then
+				select concat("O grupo ", pgrupo1, " não existe") resp;
+			elseif not v_existegrupo1 then
+				select concat("O grupo ", pgrupo2, " não existe");
+			end if;
+        end if;
+	else
+		select concat("O status ", pstatus, " não existe") resp;
+	end if;
+end$$
+delimiter ;
+
+drop procedure sp_q16;
+
+call sp_q16(1, "informaticas", "foto");
+
 /*
 	17) Mostre o nome e saldo do(s) produto(s) vendidos para clientes do sexo masculino, solteiros ou
 	divorciados.

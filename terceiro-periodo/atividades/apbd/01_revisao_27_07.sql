@@ -1,7 +1,6 @@
 create database bd2026;
 
 show databases;
-
 use bd2026;
 
 show tables;
